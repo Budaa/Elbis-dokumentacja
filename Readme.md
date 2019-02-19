@@ -5,9 +5,11 @@
 Poniższy skrypt proszę wkleić do pliku `formularz.php` pomiędzy tagami `<head></head>`
 
 ```javascript
- <script type="text/javascript">
+<script type="text/javascript">
     var bruttoHTMLNode;
     var nettoHTMLNode;
+    window.textPrzedCenaNetto = 'Cena Netto:';
+    window.textPrzedCenaBrutto = 'Cena Brutto:';
       document.addEventListener('DOMContentLoaded', function() {
         var ID_ELEMENTU_WYSWIETLAJACEGO_AKTUALNA_WARTOSC_ZAMOWNIEA_NETTO =
           'wartosc-zamowienia-netto';
@@ -20,6 +22,9 @@ Poniższy skrypt proszę wkleić do pliku `formularz.php` pomiędzy tagami `<hea
         nettoHTMLNode = document.getElementById(
           ID_ELEMENTU_WYSWIETLAJACEGO_AKTUALNA_WARTOSC_ZAMOWNIEA_NETTO
         );
+        bruttoHTMLNode.innerHTML = window.textPrzedCenaBrutto;
+        nettoHTMLNode.innerHTML = window.textPrzedCenaNetto;
+
       });
         var totalBrutto;
         var totalNetto;
@@ -29,6 +34,7 @@ Poniższy skrypt proszę wkleić do pliku `formularz.php` pomiędzy tagami `<hea
         var WALUTA = 'zl';
         // Jezli produkt nie ma podaej stawki VAT, ponizsza zostanie doliczona.
         var PODSTAWOWA_STAWKA_VAT = '23';
+
 
         function roundToSecondDecimal(value) {
           return Math.round(value * 100) / 100;
@@ -72,10 +78,19 @@ Poniższy skrypt proszę wkleić do pliku `formularz.php` pomiędzy tagami `<hea
             i
             ID_ELEMENTU_WYSWIETLAJACEGO_AKTUALNA_WARTOSC_ZAMOWNIEA_BRUTTO
           */
-          bruttoHTMLNode.innerHTML = `Cena Brutto: ${totalBrutto.toFixed(2)} ${WALUTA}`;
-          nettoHTMLNode.innerHTML = `Cena Netto: ${totalNetto.toFixed(2)} ${WALUTA}`;
+          bruttoHTMLNode.innerHTML = `${window.textPrzedCenaBrutto} ${totalBrutto.toFixed(2)} ${WALUTA}`;
+          nettoHTMLNode.innerHTML = `${window.textPrzedCenaNetto} ${totalNetto.toFixed(2)} ${WALUTA}`;
         }
     </script>
+```
+
+## ID tagu Form
+
+Zeby nasz skypt dzialal musimy ustalic ID naszego formularza. 
+Do tagu `<form>` nalezy dopisac id
+```html
+<form id="formularz-zamowienia" .../>
+
 ```
 
 ---
@@ -89,7 +104,8 @@ Skrypt wyświetli podliczona wartość zamówienia w elementach HTML z wartości
 Wartość netto zamówienia zostanie wstrzyknięta pomiędzy tagi `<span>`.
 
 ```html
-<div><span id="wartosc-zamowienia-netto"></span></div>
+<p id="wartosc-zamowienia-netto"></p>
+<p id="wartosc-zamowienia-brutton"></p>
 ```
 
 ### Uwaga!
